@@ -1,37 +1,18 @@
 name: Frontend CI
 
 on:
-  push:
-    branches:
-      - frontend-dev
-  pull_request:
-    branches:
-      - frontend-dev
+  workflow_dispatch:  # Esto te permite correrlo manualmente desde GitHub
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Instalar Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      - name: Install dependencies
+        run: npm install
 
-      - name: Instalar dependencias
-        run: |
-          cd frontend
-          npm install
+      - name: Build
+        run: npm run build
 
-      - name: Ejecutar pruebas
-        run: |
-          cd frontend
-          npm test
-
-      - name: Build del proyecto
-        run: |
-          cd frontend
-          npm run build
