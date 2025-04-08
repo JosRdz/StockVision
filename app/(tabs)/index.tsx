@@ -6,20 +6,21 @@ import '@tensorflow/tfjs-react-native';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const cameraRef = useRef<Camera | null>(null);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back); // Tipo de cámara
+  const cameraRef = useRef<Camera | null>(null); // Referencia inicializada en null
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-      await tf.ready();
+      setHasPermission(status === 'granted'); // Permiso de cámara
+      await tf.ready(); // Inicialización de TensorFlow
     })();
   }, []);
 
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      console.log(photo);
+      console.log(photo); // Procesar la imagen aquí
     }
   };
 
@@ -34,6 +35,7 @@ export default function App() {
     <View style={styles.container}>
       <Camera
         style={styles.camera}
+        type={cameraType}
         ref={cameraRef}
       >
         <View style={styles.buttonContainer}>
