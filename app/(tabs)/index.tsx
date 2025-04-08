@@ -1,39 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { CameraType, requestCameraPermissionsAsync } from 'expo-camera';
-import { Camera } from 'expo-camera/Camera'; // 👈 Importación correcta del componente
+import { Camera, CameraType, useCameraPermissions } from 'expo-camera';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 
 export default function App() {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [cameraType, setCameraType] = useState<CameraType>('back');
+  const [permission, requestPermission] = useCameraPermissions();
+  const [cameraType, setCameraType] = useState<CameraType>(CameraType.back);
   const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-      await tf.ready(); // Inicializa TensorFlow
+      if (!permission?.granted) {
+        await requestPermission();
+      }
+      await tf.ready(); // Inicializar TensorFlow
     })();
   }, []);
 
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      console.log(photo); // Aquí puedes enviar la foto a TensorFlow
+      console.log('Foto capturada:', photo);
     }
   };
 
   const toggleCameraType = () => {
-    setCameraType((prevType) =>
-      prevType === 'back' ? 'front' : 'back'
+    setCameraType((prev) =>
+      prev === CameraType.back ? CameraType.front : CameraType.back
     );
   };
 
-  if (hasPermission === null) return <View />;
-  if (hasPermission === false)
-    return <Text>No se puede acceder a la cámara</Text>;
+  if (!permission) return <View />;
+  if (!permission.granted)
+    return <Text>No tienes permisos para usar la cámara.</Text>;
 
   return (
     <View style={styles.container}>
@@ -60,9 +60,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 30,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     backgroundColor: 'rgba(0,0,0,0.3)',
     padding: 10,
+  },
+});
