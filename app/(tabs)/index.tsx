@@ -6,7 +6,7 @@ import '@tensorflow/tfjs-react-native';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
     (async () => {
