@@ -1,52 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { Camera, CameraType, useCameraPermissions } from 'expo-camera';
-import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
 export default function App() {
-  const [permission, requestPermission] = useCameraPermissions();
-  const [cameraType, setCameraType] = useState<CameraType>(CameraType.back);
-  const cameraRef = useRef<Camera | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      if (!permission?.granted) {
-        await requestPermission();
-      }
-      await tf.ready(); // Inicializar TensorFlow
-    })();
-  }, []);
-
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
-      console.log('Foto capturada:', photo);
-    }
-  };
-
-  const toggleCameraType = () => {
-    setCameraType((prev) =>
-      prev === CameraType.back ? CameraType.front : CameraType.back
-    );
-  };
-
-  if (!permission) return <View />;
-  if (!permission.granted)
-    return <Text>No tienes permisos para usar la cámara.</Text>;
-
   return (
     <View style={styles.container}>
-      <Camera
-        ref={cameraRef}
-        style={styles.camera}
-        type={cameraType}
-      >
-        <View style={styles.buttonContainer}>
-          <Button title="Tomar Foto" onPress={takePicture} />
-          <Button title="Cambiar Cámara" onPress={toggleCameraType} />
-        </View>
-      </Camera>
+      {/* Pantalla principal */}
+      <Text style={styles.title}>Seguridad en Tiendas</Text>
+      <Button title="Ver Cámaras" onPress={() => alert('Accediendo a cámaras')} />
+      <Button title="Ver Reportes" onPress={() => alert('Accediendo a reportes')} />
+      <Button title="Configuración" onPress={() => alert('Accediendo a configuración')} />
+
+      {/* Ejemplo de sección de reportes */}
+      <View style={styles.reportSection}>
+        <Text style={styles.subtitle}>Reportes Recientes</Text>
+        <FlatList
+          data={[
+            { key: 'Robo detectado en el pasillo 3' },
+            { key: 'Actividad sospechosa cerca de la entrada' },
+            { key: 'Empleado no autorizado en área restringida' },
+          ]}
+          renderItem={({ item }) => <Text style={styles.reportItem}>{item.key}</Text>}
+        />
+      </View>
     </View>
   );
 }
@@ -54,17 +29,29 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  camera: {
-    flex: 1,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    backgroundColor: 'rgba(0,0,0,0.3)',
+  subtitle: {
+    fontSize: 18,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  reportSection: {
+    marginTop: 30,
+    width: '90%',
+    backgroundColor: '#eaeaea',
     padding: 10,
+    borderRadius: 10,
+  },
+  reportItem: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
