@@ -3,7 +3,7 @@ import os
 
 # ID del archivo de Google Drive
 file_id = "1t-cbYb03JU6wPxCY0L1zZADdb7-rQyir"
-output_dir = "E3ntrenamiento"
+output_dir = "Entrenamiento"
 os.makedirs(output_dir, exist_ok=True)
 
 # Ruta de salida
