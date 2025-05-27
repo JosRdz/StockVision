@@ -4,7 +4,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
 # Ruta fija del modelo (corrigiendo barras para Windows)
-modelo = load_model("Entrenamiento/modelo_robo.keras")
+modelo = load_model("Entrenamiento/modelo.keras")
 print("Modelo cargado correctamente")
 
 # IP fija de la cámara IP
