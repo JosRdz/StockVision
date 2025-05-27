@@ -8,7 +8,7 @@ modelo = load_model("H:\\Mi unidad\\IA-Robos\\Modelos\\modelo_robo.keras")
 print("Modelo cargado correctamente")
 
 # IP fija de la cámara IP
-URL_CÁMARA_IP = "http://192.168.1.50:8080/video"
+URL_CÁMARA_IP = "http://210.209.189.13:8080/video"
 
 def detectar_robo(img_path, model):
     """Detecta posible robo en una imagen."""
