@@ -5,7 +5,7 @@ from tensorflow.keras.preprocessing import image
 
 # Ruta fija del modelo (corrigiendo barras para Windows)
 modelo = load_model("H:\\Mi unidad\\IA-Robos\\Modelos\\modelo_robo.keras")
-print("✅ Modelo cargado correctamente")
+print("Modelo cargado correctamente")
 
 # IP fija de la cámara IP
 URL_CÁMARA_IP = "http://192.168.1.50:8080/video"
@@ -19,9 +19,9 @@ def detectar_robo(img_path, model):
     prediction = model.predict(img_array)[0][0]
 
     if prediction > 0.9:  # Ajusta el umbral si hay muchas falsas alarmas
-        print("⚠️ Alerta: Posible robo detectado!")
+        print("Alerta: Posible robo detectado!")
     else:
-        print("✅ Comportamiento normal")
+        print("Comportamiento normal")
 
 def detectar_robo_frame(frame, model):
     """Detecta actividad sospechosa en un frame de video."""
@@ -35,7 +35,7 @@ def iniciar_camara():
     cap = cv2.VideoCapture(0)
     
     if not cap.isOpened():
-        print("❌ Error: No se pudo acceder a la webcam")
+        print("Error: No se pudo acceder a la webcam")
         return
 
     while True:
@@ -44,7 +44,7 @@ def iniciar_camara():
             break
 
         if detectar_robo_frame(frame, modelo):
-            cv2.putText(frame, "⚠️ Robo Detectado!", (10,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+            cv2.putText(frame, "Robo Detectado!", (10,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
         cv2.imshow("Cámara", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -58,7 +58,7 @@ def iniciar_camara_ip():
     cap = cv2.VideoCapture(URL_CÁMARA_IP)
 
     if not cap.isOpened():
-        print(f"❌ Error: No se pudo conectar a la cámara IP ({URL_CÁMARA_IP})")
+        print(f"Error: No se pudo conectar a la cámara IP ({URL_CÁMARA_IP})")
         return
 
     while True:
@@ -67,7 +67,7 @@ def iniciar_camara_ip():
             break
 
         if detectar_robo_frame(frame, modelo):
-            cv2.putText(frame, "⚠️ Robo Detectado!", (10,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+            cv2.putText(frame, "Robo Detectado!", (10,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
         cv2.imshow("Cámara IP", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -77,9 +77,9 @@ def iniciar_camara_ip():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    print("1️⃣ Detectar robo en una imagen")
-    print("2️⃣ Activar cámara en tiempo real")
-    print("3️⃣ Activar cámara IP")
+    print("Detectar robo en una imagen")
+    print("Activar cámara en tiempo real")
+    print("Activar cámara IP")
     opcion = input("Elige una opción: ")
 
     if opcion == "1":
