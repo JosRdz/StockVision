@@ -8,7 +8,7 @@ modelo = load_model("Entrenamiento/modelo.keras")
 print("Modelo cargado correctamente")
 
 # IP fija de la cámara IP
-URL_CÁMARA_IP = "http://210.209.189.13:8080/video"
+URL_CÁMARA_IP = "http://210.221.137.205:8080/video"
 
 def detectar_robo(img_path, model):
     """Detecta posible robo en una imagen."""
@@ -90,4 +90,4 @@ if __name__ == "__main__":
     elif opcion == "3":
         iniciar_camara_ip()
     else:
-        print("❌ Opción inválida, intenta de nuevo.")
+        print("Opción inválida, intenta de nuevo.")
