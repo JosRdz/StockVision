@@ -1,109 +1,123 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function ExploreScreen() {
+  const [modalContent, setModalContent] = useState<'config' | null>(null);
 
-export default function TabTwoScreen() {
+  const openConfig = () => {
+    setModalContent('config');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <LinearGradient colors={['#FF944D', '#FF6F61']} style={styles.container}>
+      {/* Modal de Configuración con Ayuda integrada */}
+      <Modal
+        visible={modalContent !== null}
+        animationType="slide"
+        onRequestClose={() => setModalContent(null)}
+      >
+        <LinearGradient colors={['#FF944D', '#FF6F61']} style={styles.modalContent}>
+          {modalContent === 'config' && (
+            <>
+              {/* Sección de Configuración */}
+              <Text style={styles.title}>Configuración</Text>
+              <Text style={styles.modalText}>
+                Aquí puedes ajustar opciones como notificaciones, cuenta, etc.
+              </Text>
+
+              {/* Sección de Ayuda justo debajo */}
+              <Text style={styles.title}>Ayuda</Text>
+              <Text style={styles.modalText}>
+                Información para usuarios y contacto de soporte.
+              </Text>
+
+              {/* Botón para cerrar */}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalContent(null)}
+              >
+                <Text style={styles.closeButtonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </LinearGradient>
+      </Modal>
+
+      {/* Barra inferior con íconos */}
+      <View style={styles.bottomBar}>
+        <TouchableOpacity style={styles.bottomButton}>
+          <Icon name="clock" size={24} color="#FFFFFF" />
+          <Text style={styles.bottomButtonText}>Historial</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bottomButton}>
+          <Icon name="camera" size={24} color="#FFFFFF" />
+          <Text style={styles.bottomButtonText}>Cámaras</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bottomButton}>
+          <Icon name="alert-circle" size={24} color="#FFFFFF" />
+          <Text style={styles.bottomButtonText}>Reporte</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bottomButton} onPress={openConfig}>
+          <Icon name="menu" size={24} color="#FFFFFF" />
+          <Text style={styles.bottomButtonText}>Menú</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 }
 
+// Define the styles using StyleSheet.create
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  titleContainer: {
+  modalContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  closeButton: {
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: '#FF6F61',
+    fontWeight: 'bold',
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
     flexDirection: 'row',
-    gap: 8,
+    justifyContent: 'space-around',
+    backgroundColor: '#FF944D',
+    width: '100%',
+    paddingVertical: 10,
+  },
+  bottomButton: {
+    alignItems: 'center',
+  },
+  bottomButtonText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    marginTop: 5,
   },
 });
